@@ -9,7 +9,14 @@ script:
   - docker run -e CI=true tarakashka22/react-test npm test -- --coverage
 
 after_success:
-  - docker build -t tarakashka22/multi-client ./client
-  - docker build -t tarakashka22/multi-nginx ./nginx
-  - docker build -t tarakashka22/multi-server ./server
-  - docker build -t tarakashka22/multi-worker ./worker
+  - docker build -t tarakashka/multi-client ./client
+  - docker build -t tarakashka/multi-nginx ./nginx
+  - docker build -t tarakashka/multi-server ./server
+  - docker build -t tarakashka/multi-worker ./worker
+  # Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take those images and push to docker hub
+  - docker push tarakashka/multi-client
+  - docker push tarakashka/multi-nginx
+  - docker push tarakashka/multi-server
+  - docker push tarakashka/multi-worker
